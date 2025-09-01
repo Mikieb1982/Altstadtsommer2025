@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winning Number Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color-start: #781d7e;
+            --background-color-end: #d71969;
+            --app-background-color: rgba(44, 0, 43, 0.5);
+            --input-background-color: rgba(0, 0, 0, 0.2);
+            --text-color: #ffffff;
+            --text-color-secondary: rgba(255, 255, 255, 0.7);
+            --primary-color: #f58220;
+            --primary-hover-color: #f79c4a;
+            --button-text-color: #2C002B;
+            --win-color: #f58220;
+            --loss-color: #ff4d4d;
+            --border-color: rgba(255, 255, 255, 0.3);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--background-color-start), var(--background-color-end));
+            color: var(--text-color);
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        #root {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-container {
+            background-color: var(--app-background-color);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-family: var(--font-family);
+            font-weight: 700;
+            color: var(--text-color-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            z-index: 10;
+        }
+
+        .lang-toggle:hover,
+        .lang-toggle:focus {
+            color: var(--primary-color);
+            background-color: rgba(245, 130, 32, 0.1);
+            outline: none;
+        }
+
+        .logo-header {
+            margin-bottom: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .logo-main {
+            display: block;
+            font-size: 2rem;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .logo-sub {
+            display: block;
+            font-size: 3rem;
+            color: var(--text-color);
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            color: var(--text-color-secondary);
+        }
+
+        .label {
+            /* The placeholder and prominent input make it redundant, but keep for screen readers */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            background-color: var(--input-background-color);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-family);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        /* hide number input arrows */
+        .input-field::-webkit-outer-spin-button,
+        .input-field::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        .input-field[type=number] {
+          -moz-appearance: textfield;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(245, 130, 32, 0.4);
+            outline: none;
+        }
+
+        .button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--button-text-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        }
+
+        .button:hover,
+        .button:focus {
+            background-color: var(--primary-hover-color);
+            outline: none;
+        }
+
+        .button:disabled {
+            background-color: var(--primary-color);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .result-icon {
+            font-size: 80px;
+            line-height: 1;
+        }
+
+        .result-icon.win {
+            color: var(--win-color);
+        }
+
+        .result-icon.loss {
+            color: var(--loss-color);
+        }
+
+        .result-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+        }
+
+        .prize-card {
+            background-color: var(--input-background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .prize-header {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-color-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prize-description {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .prize-sponsor {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+        }
+
+
+        /* For smaller devices */
+        @media (max-width: 600px) {
+            body {
+                font-size: 16px;
+            }
+            .app-container {
+                padding: 2rem 1.5rem;
+            }
+            .logo-main {
+                font-size: 1.8rem;
+            }
+            .logo-sub {
+                font-size: 2.5rem;
+            }
+            .title {
+                font-size: 1.2rem;
+            }
+            .result-text {
+                font-size: 1.2rem;
+            }
+            .prize-description {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script type="module">
+        // --- DATA SOURCE ---
+        const prizes = {
+            1: { nr: 26, sponsor: "Schreibwarenladen", prize: "Schreibmappe (I-Clip)" },
+            11: { nr: 9, sponsor: "Trockenbau Tietz", prize: "1 Akkuschrauber" },
+            23: { nr: 17, sponsor: "Euronics", prize: "DAB Radio" },
+            30: { nr: 100, sponsor: "NABU", prize: "1 Kalender 2026" },
+            38: { nr: 91, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
+            45: { nr: 78, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
+            49: { nr: 96, sponsor: "Agrar Heideshoff GbR", prize: "1x 10 kg Kartoffeln" },
+            52: { nr: 80, sponsor: "Steintherme Bad", prize: "Tageskarte Sauna" },
+            79: { nr: 2, sponsor: "Euronics", prize: "Fernseher" },
+            80: { nr: 33, sponsor: "Getränkehandel Brücker Landstr.", prize: "Wertgutschein" },
+            121: { nr: 71, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
+            133: { nr: 86, sponsor: "Euronics", prize: "Überraschungstüte" },
+            154: { nr: 92, sponsor: "Paulinenhof", prize: "Gutschein 1 Burg-Menü" },
+            213: { nr: 31, sponsor: "Apollo Optik", prize: "Wertgutschein" },
+            241: { nr: 6, sponsor: "Euronics", prize: "1 Soundsystem" },
+            267: { nr: 63, sponsor: "Märkische Apotheke", prize: "Wertgutschein" },
+            268: { nr: 49, sponsor: "Frisör Wricke", prize: "Wertgutschein" },
+            271: { nr: 66, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
+            304: { nr: 89, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte (gesamt 207 Euro)" },
+            320: { nr: 79, sponsor: "Fläming-Alpaka", prize: "Alpaka-Wanderung" },
+            340: { nr: 88, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
+            345: { nr: 1, sponsor: "Fahrradhaus Ahl", prize: "1 Sportrad + Fahrradschloss" },
+            354: { nr: 41, sponsor: "Märkische Apotheke", prize: "Wertgutschein" },
+            360: { nr: 75, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
+            400: { nr: 81, sponsor: "Zeitungseck", prize: "Käse-Dose" },
+            433: { nr: 101, sponsor: "NABU", prize: "Kalender 2026" },
+            458: { nr: 64, sponsor: "Reha-Klinik 'Hoher Fläming'", prize: "Wertgutschein" },
+            463: { nr: 73, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
+            473: { nr: 3, sponsor: "Idee + Spiel Antje", prize: "Spielhaus" },
+            475: { nr: 19, sponsor: "Nord Ostsee Automobile", prize: "Servicegutschein" },
+            509: { nr: 83, sponsor: "Frisör Markowski", prize: "1 Fußpflege" },
+            519: { nr: 57, sponsor: "Gaststätte Paradies", prize: "Wertgutschein" },
+            520: { nr: 61, sponsor: "Fitness- und Gesundheits-Club", prize: "Wertgutschein" },
+            540: { nr: 46, sponsor: "Frisörsalon Jan", prize: "1x Waschen, Schneiden, Föhnen" },
+            547: { nr: 43, sponsor: "Reitstall Peters", prize: "1 Reitstunde" },
+            565: { nr: 74, sponsor: "Reiter- und Erlebnis Ketz", prize: "1 Salami" },
+            608: { nr: 69, sponsor: "Old Sandhill Whisky", prize: "1 Flasche Whisky" },
+            618: { nr: 34, sponsor: "Getränkehandel Brücker Landstr.", prize: "Wertgutschein" },
+            619: { nr: 68, sponsor: "Textiladen P-han", prize: "Wertgutschein" },
+            625: { nr: 44, sponsor: "Reitstall Peters", prize: "1 Reitstunde" },
+            627: { nr: 37, sponsor: "Die Brille am Marktplatz", prize: "Wertgutschein" },
+            661: { nr: 29, sponsor: "Burgmetzgerei Bad Belzig", prize: "Wertgutschein" },
+            663: { nr: 24, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
+            678: { nr: 65, sponsor: "Reha-Klinik 'Hoher Fläming'", prize: "Wertgutschein" },
+            700: { nr: 12, sponsor: "Nord Ostsee Automobile", prize: "Servicegutschein" },
+            717: { nr: 30, sponsor: "Apollo Optik", prize: "Wertgutschein" },
+            733: { nr: 55, sponsor: "Blumengeschäft", prize: "Wertgutschein" },
+            735: { nr: 58, sponsor: "Frisör Wricke", prize: "Wertgutschein" },
+            737: { nr: 5, sponsor: "Lafim-Diakonie", prize: "Holzbank" },
+            745: { nr: 103, sponsor: "Bäckerei Gehricke", prize: "Gutschein" },
+            765: { nr: 39, sponsor: "Modehaus Ehle", prize: "1 Portmonnaie" },
+            840: { nr: 7, sponsor: "Nord Ostsee Automobile", prize: "Wochenende mit einem EQ-Modell" },
+            850: { nr: 93, sponsor: "Paulinenhof", prize: "Gutschein Day-Spa" },
+            851: { nr: 62, sponsor: "Eisenwaren Näsi", prize: "Wertgutschein" },
+            885: { nr: 25, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
+            890: { nr: 90, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
+            900: { nr: 98, sponsor: "Herbert Grüneberg, Lütte", prize: "1 Kalender 2026" },
+            908: { nr: 76, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
+            942: { nr: 53, sponsor: "Segelflugplatz", prize: "1 Gastflug im Segelflugzeug" },
+            978: { nr: 56, sponsor: "Blumengeschäft", prize: "Wertgutschein" },
+            1020: { nr: 52, sponsor: "Húng Watsana", prize: "1x halbe Stunde Thaimassage" },
+            1028: { nr: 95, sponsor: "Agrargenossenschaft Brück", prize: "1x 20 kg Kartoffeln" },
+            1042: { nr: 27, sponsor: "Alter Brauhof", prize: "Wertgutschein" },
+            1058: { nr: 42, sponsor: "Buchhandlung R. Sandberger Str.", prize: "Wertgutschein" },
+            1105: { nr: 54, sponsor: "Segelflugplatz", prize: "1 Gastflug im Segelflugzeug" },
+            1132: { nr: 59, sponsor: "Haar Planet 21", prize: "Wertgutschein" },
+            1135: { nr: 67, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
+            1141: { nr: 8, sponsor: "Natur Konkret", prize: "1 Nacht in Öko-Turm" },
+            1143: { nr: 102, sponsor: "Bäckerei Gehricke", prize: "Gutschein" },
+            1162: { nr: 4, sponsor: "Elektro Knape", prize: "Akkustaubsauger" },
+            1164: { nr: 38, sponsor: "Modehaus Ehle", prize: "1 Tasche" },
+            1203: { nr: 84, sponsor: "Euronics", prize: "Tee-Maschine" },
+            1235: { nr: 36, sponsor: "Die Brille am Marktplatz", prize: "Wertgutschein" },
+            1359: { nr: 22, sponsor: "Gasthaus 'Blick'", prize: "Wertgutschein" },
+            1385: { nr: 35, sponsor: "Fitness- und Gesundheits-Club", prize: "Wertgutschein" },
+            1402: { nr: 15, sponsor: "Friseur Dumscha", prize: "1x Waschen, Schneiden, Föhnen" },
+            1428: { nr: 50, sponsor: "Steintherme Bad", prize: "Tageskarte für Sauna & Bad" },
+            1444: { nr: 48, sponsor: "Autohaus Böttcher", prize: "1x Polarbox" },
+            1492: { nr: 85, sponsor: "Euronics", prize: "Mobiler Dampfreiniger + Radio + Powerbank" },
+            1498: { nr: 16, sponsor: "Belziger Baustoff", prize: "1 Blumendünger" },
+            1507: { nr: 23, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
+            1544: { nr: 45, sponsor: "Reiter- und Erlebnis Ketz", prize: "1 Reitstunde" },
+            1599: { nr: 94, sponsor: "Agrargenossenschaft Brück", prize: "1x 20 kg Kartoffeln" },
+            1604: { nr: 51, sponsor: "Húng Watsana", prize: "1x halbe Stunde Thaimassage" },
+            1644: { nr: 77, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
+            1649: { nr: 87, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
+            1687: { nr: 70, sponsor: "TeeArt Café", prize: "Tee-Auswahl" },
+            1718: { nr: 28, sponsor: "Steakhaus 'El-Rancho'", prize: "Wertgutschein" },
+            1735: { nr: 20, sponsor: "REMA Fahrzeug", prize: "1 eingestielter Miststreuer" },
+            1758: { nr: 99, sponsor: "NABU", prize: "1 Kalender 2026" },
+            1760: { nr: 60, sponsor: "Haar Planet 21", prize: "Wertgutschein" },
+            1789: { nr: 10, sponsor: "Iris Optik", prize: "Wertgutschein" },
+            1794: { nr: 14, sponsor: "Bau- und Zweirad", prize: "1 Kleinkompressor" },
+            1811: { nr: 13, sponsor: "Berücks Baggerservice", prize: "1 Hochbeetaster" },
+            1862: { nr: 72, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
+            1868: { nr: 32, sponsor: "Frisör", prize: "Wertgutschein" },
+            1873: { nr: 21, sponsor: "Landkaufhaus St. Lüsse", prize: "Wertgutschein" },
+            1890: { nr: 47, sponsor: "Autohaus Böttcher", prize: "1x Polarbox" },
+            1912: { nr: 11, sponsor: "Apollo Optik", prize: "Wertgutschein" },
+            1925: { nr: 18, sponsor: "Euronics", prize: "FM Radio" },
+            1935: { nr: 82, sponsor: "Frisör Markowski", prize: "1 Fußpflege" },
+            1983: { nr: 40, sponsor: "Euronics", prize: "Akku-Fenstersauger" },
+        };
+
+        // --- LOCALIZATION ---
+        const translations = {
+            en: {
+                title: "Raffle Checker",
+                label: "Enter your number",
+                checkButton: "Check Number",
+                winMessage: "Congratulations! You have a winning number.",
+                lossMessage: "Sorry, this is not a winning number.",
+                checkAnotherButton: "Check Another",
+                langToggle: "DEUTSCH",
+                inputAriaLabel: "Lottery number input",
+                prizeHeader: "Prize Nr.",
+                sponsoredBy: "Sponsored by",
+            },
+            de: {
+                title: "Los Prüfer",
+                label: "Geben Sie Ihre Nummer ein",
+                checkButton: "Nummer prüfen",
+                winMessage: "Herzlichen Glückwunsch! Sie haben eine Gewinnzahl.",
+                lossMessage: "Leider ist dies keine Gewinnzahl.",
+                checkAnotherButton: "Erneut prüfen",
+                langToggle: "ENGLISH",
+                inputAriaLabel: "Losenummern-Eingabe",
+                prizeHeader: "Preis Nr.",
+                sponsoredBy: "Gesponsert von",
+            },
+        };
+
+        // --- APPLICATION STATE ---
+        let state = {
+            language: 'de',
+            result: 'idle',
+            inputValue: '',
+            winningPrize: null,
+        };
+
+        function setState(newState) {
+            state = { ...state, ...newState };
+            render();
+        }
+
+        // --- UI COMPONENTS ---
+        function App() {
+            const t = translations[state.language];
+            const showResult = state.result !== 'idle';
+
+            return `
+                <button class="lang-toggle" data-action="toggle-lang">${t.langToggle}</button>
+                <div class="app-container">
+                    <div class="logo-header">
+                        <span class="logo-main">ALTSTADT</span>
+                        <span class="logo-sub">SOMMER</span>
+                    </div>
+                    <h1 class="title">${t.title}</h1>
+                    ${showResult ? ResultView() : FormView()}
+                </div>
+            `;
+        }
+
+        function FormView() {
+            const t = translations[state.language];
+            return `
+                <label class="label" for="number-input">${t.label}</label>
+                <input 
+                    type="number"
+                    id="number-input"
+                    class="input-field"
+                    value="${state.inputValue}"
+                    placeholder="${t.label}"
+                    aria-label="${t.inputAriaLabel}"
+                    oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                    data-action="input-change"
+                />
+                <button 
+                    class="button" 
+                    data-action="check-number"
+                    ${!state.inputValue ? 'disabled' : ''}
+                >
+                    ${t.checkButton}
+                </button>
+            `;
+        }
+
+        function ResultView() {
+            const t = translations[state.language];
+            const isWin = state.result === 'win';
+            const message = isWin ? t.winMessage : t.lossMessage;
+            const icon = isWin ? '🏆' : '✗';
+            const iconClass = isWin ? 'win' : 'loss';
+
+            let prizeDetails = '';
+            if (isWin && state.winningPrize) {
+                prizeDetails = `
+                    <div class="prize-card">
+                        <h3 class="prize-header">${t.prizeHeader} ${state.winningPrize.nr}</h3>
+                        <p class="prize-description">${state.winningPrize.prize}</p>
+                        <p class="prize-sponsor">${t.sponsoredBy}: ${state.winningPrize.sponsor}</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="result-container" role="alert" aria-live="assertive">
+                    <div class="result-icon ${iconClass}" aria-hidden="true">${icon}</div>
+                    <p class="result-text">${message}</p>
+                    ${prizeDetails}
+                    <button class="button" data-action="check-another">${t.checkAnotherButton}</button>
+                </div>
+            `;
+        }
+
+        // --- RENDER & EVENT HANDLING ---
+        const root = document.getElementById('root');
+
+        function render() {
+            if (root) {
+                root.innerHTML = App();
+                // After rendering, focus the input if we are in the form view
+                if (state.result === 'idle') {
+                    const input = root.querySelector('#number-input');
+                    if (input) {
+                        input.focus();
+                    }
+                }
+            }
+        }
+
+        function handleCheckNumber() {
+            if (state.inputValue) {
+                const num = parseInt(state.inputValue, 10);
+                const prize = prizes[num];
+                if (prize) {
+                    setState({ result: 'win', winningPrize: prize });
+                    // Trigger celebration effects
+                    confetti({
+                        particleCount: 150,
+                        spread: 90,
+                        origin: { y: 0.6 }
+                    });
+                } else {
+                    setState({ result: 'loss', winningPrize: null });
+                }
+            }
+        }
+
+        function handleAction(e) {
+            const target = e.target;
+            const action = target.dataset.action;
+
+            switch (action) {
+                case 'toggle-lang':
+                    setState({ language: state.language === 'en' ? 'de' : 'en' });
+                    break;
+                case 'check-number':
+                    handleCheckNumber();
+                    break;
+                case 'check-another':
+                    setState({ result: 'idle', inputValue: '', winningPrize: null });
+                    break;
+                case 'input-change':
+                    if (e.target instanceof HTMLInputElement) {
+                        // We update the state, but only re-render the button's disabled state
+                        // This is a micro-optimization to avoid re-rendering the whole form on every keystroke
+                        state.inputValue = e.target.value;
+                        const button = root.querySelector('[data-action="check-number"]');
+                        if (button) {
+                            button.disabled = !state.inputValue;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        function handleKeydown(e) {
+            if (e.key === 'Enter') {
+                // Prevent default browser action (like form submission)
+                e.preventDefault();
+
+                // If a result is shown, Enter key should reset the app
+                if (state.result !== 'idle') {
+                    setState({ result: 'idle', inputValue: '', winningPrize: null });
+                }
+                // If we are on the form view, Enter key should check the number
+                else if (document.activeElement?.id === 'number-input') {
+                    handleCheckNumber();
+                }
+            }
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (root) {
+                // Use event delegation
+                root.addEventListener('click', handleAction);
+                root.addEventListener('input', handleAction);
+                // Listen for keydown events on the whole document
+                document.addEventListener('keydown', handleKeydown);
+                render();
+            }
+        });
+    </script>
+</body>
+</html>
