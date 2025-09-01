@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,35 +8,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
+        /* Example body style to demonstrate the widget is self-contained */
+        body {
+            background-color: #f0f2f5;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        /* --- Altstadtsommer Los Checker Widget Styles --- */
+        /* All styles are scoped within this ID to prevent conflicts when embedded. */
+        #altstadtsommer-los-checker {
             --background-color-start: #781d7e;
             --background-color-end: #d71969;
             --app-background-color: rgba(44, 0, 43, 0.5);
             --input-background-color: rgba(0, 0, 0, 0.2);
             --text-color: #ffffff;
-            --text-color-secondary: rgba(255, 255, 255, 0.7);
+            --text-color-secondary: rgba(255, 255, 255, 0.85);
             --primary-color: #f58220;
             --primary-hover-color: #f79c4a;
-            --button-text-color: #2C002B;
+            --button-text-color: #000000;
             --win-color: #f58220;
             --loss-color: #ff4d4d;
             --border-color: rgba(255, 255, 255, 0.3);
             --font-family: 'Inter', sans-serif;
-        }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            height: 100%;
-        }
-
-        body {
+            /* Main container styles */
             font-family: var(--font-family);
             background: linear-gradient(135deg, var(--background-color-start), var(--background-color-end));
             color: var(--text-color);
@@ -45,16 +44,28 @@
             padding: 1rem;
             font-size: 18px;
             line-height: 1.6;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px; /* Max-width for the widget on larger screens */
+            margin: 0 auto;
         }
 
-        #root {
+        #altstadtsommer-los-checker *,
+        #altstadtsommer-los-checker *::before,
+        #altstadtsommer-los-checker *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #altstadtsommer-los-checker .los-checker-wrapper {
             width: 100%;
             max-width: 500px;
             text-align: center;
             position: relative;
         }
 
-        .app-container {
+        #altstadtsommer-los-checker .app-container {
             background-color: var(--app-background-color);
             padding: 2.5rem 2rem;
             border-radius: 16px;
@@ -65,7 +76,7 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        .lang-toggle {
+        #altstadtsommer-los-checker .lang-toggle {
             position: absolute;
             top: 1rem;
             right: 1.5rem;
@@ -82,20 +93,20 @@
             z-index: 10;
         }
 
-        .lang-toggle:hover,
-        .lang-toggle:focus {
+        #altstadtsommer-los-checker .lang-toggle:hover,
+        #altstadtsommer-los-checker .lang-toggle:focus {
             color: var(--primary-color);
             background-color: rgba(245, 130, 32, 0.1);
             outline: none;
         }
 
-        .logo-header {
+        #altstadtsommer-los-checker .logo-header {
             margin-bottom: 1rem;
             font-weight: 900;
             text-transform: uppercase;
         }
 
-        .logo-main {
+        #altstadtsommer-los-checker .logo-main {
             display: block;
             font-size: 2rem;
             color: var(--primary-color);
@@ -103,7 +114,7 @@
             line-height: 1;
         }
 
-        .logo-sub {
+        #altstadtsommer-los-checker .logo-sub {
             display: block;
             font-size: 3rem;
             color: var(--text-color);
@@ -111,15 +122,14 @@
             line-height: 1;
         }
 
-        .title {
+        #altstadtsommer-los-checker .title {
             font-size: 1.5rem;
             margin-bottom: 2rem;
             font-weight: 400;
             color: var(--text-color-secondary);
         }
 
-        .label {
-            /* The placeholder and prominent input make it redundant, but keep for screen readers */
+        #altstadtsommer-los-checker .label {
             position: absolute;
             width: 1px;
             height: 1px;
@@ -131,7 +141,7 @@
             border-width: 0;
         }
 
-        .input-field {
+        #altstadtsommer-los-checker .input-field {
             width: 100%;
             padding: 1rem;
             font-size: 1.5rem;
@@ -144,23 +154,22 @@
             font-family: var(--font-family);
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        /* hide number input arrows */
-        .input-field::-webkit-outer-spin-button,
-        .input-field::-webkit-inner-spin-button {
+        #altstadtsommer-los-checker .input-field::-webkit-outer-spin-button,
+        #altstadtsommer-los-checker .input-field::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
         }
-        .input-field[type=number] {
+        #altstadtsommer-los-checker .input-field[type=number] {
           -moz-appearance: textfield;
         }
 
-        .input-field:focus {
+        #altstadtsommer-los-checker .input-field:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(245, 130, 32, 0.4);
             outline: none;
         }
 
-        .button {
+        #altstadtsommer-los-checker .button {
             width: 100%;
             padding: 1rem;
             font-size: 1.2rem;
@@ -173,19 +182,19 @@
             transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
         }
 
-        .button:hover,
-        .button:focus {
+        #altstadtsommer-los-checker .button:hover,
+        #altstadtsommer-los-checker .button:focus {
             background-color: var(--primary-hover-color);
             outline: none;
         }
 
-        .button:disabled {
+        #altstadtsommer-los-checker .button:disabled {
             background-color: var(--primary-color);
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .result-container {
+        #altstadtsommer-los-checker .result-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -193,26 +202,26 @@
             min-height: 250px;
         }
 
-        .result-icon {
+        #altstadtsommer-los-checker .result-icon {
             font-size: 80px;
             line-height: 1;
         }
 
-        .result-icon.win {
+        #altstadtsommer-los-checker .result-icon.win {
             color: var(--win-color);
         }
 
-        .result-icon.loss {
+        #altstadtsommer-los-checker .result-icon.loss {
             color: var(--loss-color);
         }
 
-        .result-text {
+        #altstadtsommer-los-checker .result-text {
             font-size: 1.5rem;
             font-weight: 700;
             margin-top: 1.5rem;
         }
 
-        .prize-card {
+        #altstadtsommer-los-checker .prize-card {
             background-color: var(--input-background-color);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -225,7 +234,7 @@
             gap: 0.5rem;
         }
 
-        .prize-header {
+        #altstadtsommer-los-checker .prize-header {
             font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-color-secondary);
@@ -233,47 +242,53 @@
             letter-spacing: 0.5px;
         }
 
-        .prize-description {
+        #altstadtsommer-los-checker .prize-description {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-color);
             line-height: 1.2;
         }
 
-        .prize-sponsor {
+        #altstadtsommer-los-checker .prize-sponsor {
             font-size: 0.9rem;
             color: var(--text-color-secondary);
         }
 
 
-        /* For smaller devices */
         @media (max-width: 600px) {
-            body {
+            #altstadtsommer-los-checker {
                 font-size: 16px;
+                 padding: 0;
+                 border-radius: 0;
             }
-            .app-container {
+            #altstadtsommer-los-checker .app-container {
                 padding: 2rem 1.5rem;
+                border-radius: 0;
             }
-            .logo-main {
+            #altstadtsommer-los-checker .logo-main {
                 font-size: 1.8rem;
             }
-            .logo-sub {
+            #altstadtsommer-los-checker .logo-sub {
                 font-size: 2.5rem;
             }
-            .title {
+            #altstadtsommer-los-checker .title {
                 font-size: 1.2rem;
             }
-            .result-text {
+            #altstadtsommer-los-checker .result-text {
                 font-size: 1.2rem;
             }
-            .prize-description {
+            #altstadtsommer-los-checker .prize-description {
                 font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <h1 style="text-align: center; margin-bottom: 2rem;">Demo Page</h1>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">This is an example of a host page. The Los Checker widget below is fully self-contained and can be copied and pasted into your website.</p>
+    
+    <!-- START: To embed, copy from here... -->
+    <div id="altstadtsommer-los-checker"></div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script type="module">
         // --- DATA SOURCE ---
@@ -429,14 +444,16 @@
             const showResult = state.result !== 'idle';
 
             return `
-                <button class="lang-toggle" data-action="toggle-lang">${t.langToggle}</button>
-                <div class="app-container">
-                    <div class="logo-header">
-                        <span class="logo-main">ALTSTADT</span>
-                        <span class="logo-sub">SOMMER</span>
+                <div class="los-checker-wrapper">
+                    <button class="lang-toggle" data-action="toggle-lang">${t.langToggle}</button>
+                    <div class="app-container">
+                        <div class="logo-header">
+                            <span class="logo-main">ALTSTADT</span>
+                            <span class="logo-sub">SOMMER</span>
+                        </div>
+                        <h1 class="title">${t.title}</h1>
+                        ${showResult ? ResultView() : FormView()}
                     </div>
-                    <h1 class="title">${t.title}</h1>
-                    ${showResult ? ResultView() : FormView()}
                 </div>
             `;
         }
@@ -494,17 +511,19 @@
         }
 
         // --- RENDER & EVENT HANDLING ---
-        const root = document.getElementById('root');
+        const root = document.getElementById('altstadtsommer-los-checker');
 
         function render() {
             if (root) {
+                root.setAttribute('lang', state.language); // Set lang on the widget container
                 root.innerHTML = App();
-                // After rendering, focus the input if we are in the form view
+                
                 if (state.result === 'idle') {
                     const input = root.querySelector('#number-input');
-                    if (input) {
-                        input.focus();
-                    }
+                    if (input) input.focus();
+                } else {
+                    const button = root.querySelector('[data-action="check-another"]');
+                    if(button) button.focus();
                 }
             }
         }
@@ -515,12 +534,13 @@
                 const prize = prizes[num];
                 if (prize) {
                     setState({ result: 'win', winningPrize: prize });
-                    // Trigger celebration effects
-                    confetti({
-                        particleCount: 150,
-                        spread: 90,
-                        origin: { y: 0.6 }
-                    });
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 150,
+                            spread: 90,
+                            origin: { y: 0.6 }
+                        });
+                    }
                 } else {
                     setState({ result: 'loss', winningPrize: null });
                 }
@@ -529,7 +549,11 @@
 
         function handleAction(e) {
             const target = e.target;
-            const action = target.dataset.action;
+            if (!target || !target.closest('#altstadtsommer-los-checker')) return;
+            const actionTarget = target.closest('[data-action]');
+            if (!actionTarget) return;
+
+            const action = actionTarget.dataset.action;
 
             switch (action) {
                 case 'toggle-lang':
@@ -542,10 +566,8 @@
                     setState({ result: 'idle', inputValue: '', winningPrize: null });
                     break;
                 case 'input-change':
-                    if (e.target instanceof HTMLInputElement) {
-                        // We update the state, but only re-render the button's disabled state
-                        // This is a micro-optimization to avoid re-rendering the whole form on every keystroke
-                        state.inputValue = e.target.value;
+                    if (actionTarget instanceof HTMLInputElement) {
+                        state.inputValue = actionTarget.value;
                         const button = root.querySelector('[data-action="check-number"]');
                         if (button) {
                             button.disabled = !state.inputValue;
@@ -556,16 +578,12 @@
         }
 
         function handleKeydown(e) {
-            if (e.key === 'Enter') {
-                // Prevent default browser action (like form submission)
+            if (e.key === 'Enter' && root.contains(document.activeElement)) {
                 e.preventDefault();
-
-                // If a result is shown, Enter key should reset the app
                 if (state.result !== 'idle') {
                     setState({ result: 'idle', inputValue: '', winningPrize: null });
                 }
-                // If we are on the form view, Enter key should check the number
-                else if (document.activeElement?.id === 'number-input') {
+                else if (document.activeElement?.id === 'number-input' && state.inputValue) {
                     handleCheckNumber();
                 }
             }
@@ -574,14 +592,14 @@
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             if (root) {
-                // Use event delegation
-                root.addEventListener('click', handleAction);
-                root.addEventListener('input', handleAction);
-                // Listen for keydown events on the whole document
+                document.body.addEventListener('click', handleAction);
+                document.body.addEventListener('input', handleAction);
                 document.addEventListener('keydown', handleKeydown);
                 render();
             }
         });
     </script>
+    <!-- ...to here onto your website page. -->
+
 </body>
 </html>
