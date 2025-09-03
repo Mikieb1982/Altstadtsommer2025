@@ -8,59 +8,53 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #781d7e, #d71969);
-            color: #ffffff;
-            display: grid;
-            place-items: center;
-        }
-
-        /* --- Altstadtsommer Los Checker App Styles --- */
-        #altstadtsommer-los-checker {
+        :root {
+            --background-color-start: #781d7e;
+            --background-color-end: #d71969;
             --app-background-color: rgba(44, 0, 43, 0.5);
             --input-background-color: rgba(0, 0, 0, 0.2);
             --text-color: #ffffff;
-            --text-color-secondary: rgba(255, 255, 255, 0.85);
+            --text-color-secondary: rgba(255, 255, 255, 0.85); /* Increased contrast for WCAG AA */
             --primary-color: #f58220;
             --primary-hover-color: #f79c4a;
-            --button-text-color: #000000;
+            --button-text-color: #000000; /* Increased contrast for WCAG AA */
             --win-color: #f58220;
             --loss-color: #ff4d4d;
             --border-color: rgba(255, 255, 255, 0.3);
             --font-family: 'Inter', sans-serif;
+        }
 
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
             font-family: var(--font-family);
-            width: 100%;
-            max-width: 600px;
+            background: linear-gradient(135deg, var(--background-color-start), var(--background-color-end));
+            color: var(--text-color);
+            display: grid;
+            place-items: center;
             padding: 1rem;
             font-size: 18px;
             line-height: 1.6;
         }
 
-        #altstadtsommer-los-checker *,
-        #altstadtsommer-los-checker *::before,
-        #altstadtsommer-los-checker *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #altstadtsommer-los-checker .los-checker-wrapper {
+        #root {
             width: 100%;
             max-width: 500px;
             text-align: center;
             position: relative;
-            margin: 0 auto;
         }
 
-        #altstadtsommer-los-checker .app-container {
+        .app-container {
             background-color: var(--app-background-color);
             padding: 2.5rem 2rem;
             border-radius: 16px;
@@ -71,7 +65,7 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        #altstadtsommer-los-checker .lang-toggle {
+        .lang-toggle {
             position: absolute;
             top: 1rem;
             right: 1.5rem;
@@ -88,20 +82,20 @@
             z-index: 10;
         }
 
-        #altstadtsommer-los-checker .lang-toggle:hover,
-        #altstadtsommer-los-checker .lang-toggle:focus {
+        .lang-toggle:hover,
+        .lang-toggle:focus {
             color: var(--primary-color);
             background-color: rgba(245, 130, 32, 0.1);
             outline: none;
         }
 
-        #altstadtsommer-los-checker .logo-header {
+        .logo-header {
             margin-bottom: 1rem;
             font-weight: 900;
             text-transform: uppercase;
         }
 
-        #altstadtsommer-los-checker .logo-main {
+        .logo-main {
             display: block;
             font-size: 2rem;
             color: var(--primary-color);
@@ -109,7 +103,7 @@
             line-height: 1;
         }
 
-        #altstadtsommer-los-checker .logo-sub {
+        .logo-sub {
             display: block;
             font-size: 3rem;
             color: var(--text-color);
@@ -117,14 +111,15 @@
             line-height: 1;
         }
 
-        #altstadtsommer-los-checker .title {
+        .title {
             font-size: 1.5rem;
             margin-bottom: 2rem;
             font-weight: 400;
             color: var(--text-color-secondary);
         }
 
-        #altstadtsommer-los-checker .label {
+        .label {
+            /* The placeholder and prominent input make it redundant, but keep for screen readers */
             position: absolute;
             width: 1px;
             height: 1px;
@@ -136,7 +131,7 @@
             border-width: 0;
         }
 
-        #altstadtsommer-los-checker .input-field {
+        .input-field {
             width: 100%;
             padding: 1rem;
             font-size: 1.5rem;
@@ -149,22 +144,23 @@
             font-family: var(--font-family);
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        #altstadtsommer-los-checker .input-field::-webkit-outer-spin-button,
-        #altstadtsommer-los-checker .input-field::-webkit-inner-spin-button {
+        /* hide number input arrows */
+        .input-field::-webkit-outer-spin-button,
+        .input-field::-webkit-inner-spin-button {
           -webkit-appearance: none;
           margin: 0;
         }
-        #altstadtsommer-los-checker .input-field[type=number] {
+        .input-field[type=number] {
           -moz-appearance: textfield;
         }
 
-        #altstadtsommer-los-checker .input-field:focus {
+        .input-field:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(245, 130, 32, 0.4);
             outline: none;
         }
 
-        #altstadtsommer-los-checker .button {
+        .button {
             width: 100%;
             padding: 1rem;
             font-size: 1.2rem;
@@ -177,19 +173,19 @@
             transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
         }
 
-        #altstadtsommer-los-checker .button:hover,
-        #altstadtsommer-los-checker .button:focus {
+        .button:hover,
+        .button:focus {
             background-color: var(--primary-hover-color);
             outline: none;
         }
 
-        #altstadtsommer-los-checker .button:disabled {
+        .button:disabled {
             background-color: var(--primary-color);
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        #altstadtsommer-los-checker .result-container {
+        .result-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -197,26 +193,26 @@
             min-height: 250px;
         }
 
-        #altstadtsommer-los-checker .result-icon {
+        .result-icon {
             font-size: 80px;
             line-height: 1;
         }
 
-        #altstadtsommer-los-checker .result-icon.win {
+        .result-icon.win {
             color: var(--win-color);
         }
 
-        #altstadtsommer-los-checker .result-icon.loss {
+        .result-icon.loss {
             color: var(--loss-color);
         }
 
-        #altstadtsommer-los-checker .result-text {
+        .result-text {
             font-size: 1.5rem;
             font-weight: 700;
             margin-top: 1.5rem;
         }
 
-        #altstadtsommer-los-checker .prize-card {
+        .prize-card {
             background-color: var(--input-background-color);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -229,7 +225,7 @@
             gap: 0.5rem;
         }
 
-        #altstadtsommer-los-checker .prize-header {
+        .prize-header {
             font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-color-secondary);
@@ -237,169 +233,150 @@
             letter-spacing: 0.5px;
         }
 
-        #altstadtsommer-los-checker .prize-description {
+        .prize-description {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-color);
             line-height: 1.2;
         }
 
-        #altstadtsommer-los-checker .prize-sponsor {
+        .prize-sponsor {
             font-size: 0.9rem;
             color: var(--text-color-secondary);
         }
 
 
+        /* For smaller devices */
         @media (max-width: 600px) {
             body {
-                display: block;
-            }
-            #altstadtsommer-los-checker {
                 font-size: 16px;
-                padding: 0;
-                height: 100%;
-                max-width: none;
             }
-            #altstadtsommer-los-checker .app-container {
-                padding: 2.5rem 1.5rem;
-                border-radius: 0;
-                border: none;
-                box-shadow: none;
-                background-color: transparent;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
+            .app-container {
+                padding: 2rem 1.5rem;
             }
-            #altstadtsommer-los-checker .logo-main {
+            .logo-main {
                 font-size: 1.8rem;
             }
-            #altstadtsommer-los-checker .logo-sub {
+            .logo-sub {
                 font-size: 2.5rem;
             }
-            #altstadtsommer-los-checker .title {
+            .title {
                 font-size: 1.2rem;
             }
-            #altstadtsommer-los-checker .result-text {
+            .result-text {
                 font-size: 1.2rem;
             }
-            #altstadtsommer-los-checker .prize-description {
+            .prize-description {
                 font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    
-    <div id="altstadtsommer-los-checker"></div>
+    <div id="root"></div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script type="module">
         // --- DATA SOURCE ---
         const prizes = {
-            1: { nr: 26, sponsor: "Schreibwarenladen", prize: "Schreibmappe (I-Clip)" },
-            11: { nr: 9, sponsor: "Trockenbau Tietz", prize: "1 Akkuschrauber" },
-            23: { nr: 17, sponsor: "Euronics", prize: "DAB Radio" },
-            30: { nr: 100, sponsor: "NABU", prize: "1 Kalender 2026" },
-            38: { nr: 91, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
-            45: { nr: 78, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
-            49: { nr: 96, sponsor: "Agrar Heideshoff GbR", prize: "1x 10 kg Kartoffeln" },
-            52: { nr: 80, sponsor: "Steintherme Bad", prize: "Tageskarte Sauna" },
-            79: { nr: 2, sponsor: "Euronics", prize: "Fernseher" },
-            80: { nr: 33, sponsor: "Getränkehandel Brücker Landstr.", prize: "Wertgutschein" },
-            121: { nr: 71, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
-            133: { nr: 86, sponsor: "Euronics", prize: "Überraschungstüte" },
-            154: { nr: 92, sponsor: "Paulinenhof", prize: "Gutschein 1 Burg-Menü" },
-            213: { nr: 31, sponsor: "Apollo Optik", prize: "Wertgutschein" },
-            241: { nr: 6, sponsor: "Euronics", prize: "1 Soundsystem" },
-            267: { nr: 63, sponsor: "Märkische Apotheke", prize: "Wertgutschein" },
-            268: { nr: 49, sponsor: "Frisör Wricke", prize: "Wertgutschein" },
-            271: { nr: 66, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
-            304: { nr: 89, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte (gesamt 207 Euro)" },
-            320: { nr: 79, sponsor: "Fläming-Alpaka", prize: "Alpaka-Wanderung" },
-            340: { nr: 88, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
-            345: { nr: 1, sponsor: "Fahrradhaus Ahl", prize: "1 Sportrad + Fahrradschloss" },
-            354: { nr: 41, sponsor: "Märkische Apotheke", prize: "Wertgutschein" },
-            360: { nr: 75, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
-            400: { nr: 81, sponsor: "Zeitungseck", prize: "Käse-Dose" },
-            433: { nr: 101, sponsor: "NABU", prize: "Kalender 2026" },
-            458: { nr: 64, sponsor: "Reha-Klinik 'Hoher Fläming'", prize: "Wertgutschein" },
-            463: { nr: 73, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
-            473: { nr: 3, sponsor: "Idee + Spiel Antje", prize: "Spielhaus" },
-            475: { nr: 19, sponsor: "Nord Ostsee Automobile", prize: "Servicegutschein" },
-            509: { nr: 83, sponsor: "Frisör Markowski", prize: "1 Fußpflege" },
-            519: { nr: 57, sponsor: "Gaststätte Paradies", prize: "Wertgutschein" },
-            520: { nr: 61, sponsor: "Fitness- und Gesundheits-Club", prize: "Wertgutschein" },
-            540: { nr: 46, sponsor: "Frisörsalon Jan", prize: "1x Waschen, Schneiden, Föhnen" },
-            547: { nr: 43, sponsor: "Reitstall Peters", prize: "1 Reitstunde" },
-            565: { nr: 74, sponsor: "Reiter- und Erlebnis Ketz", prize: "1 Salami" },
-            608: { nr: 69, sponsor: "Old Sandhill Whisky", prize: "1 Flasche Whisky" },
-            618: { nr: 34, sponsor: "Getränkehandel Brücker Landstr.", prize: "Wertgutschein" },
-            619: { nr: 68, sponsor: "Textiladen P-han", prize: "Wertgutschein" },
-            625: { nr: 44, sponsor: "Reitstall Peters", prize: "1 Reitstunde" },
-            627: { nr: 37, sponsor: "Die Brille am Marktplatz", prize: "Wertgutschein" },
-            661: { nr: 29, sponsor: "Burgmetzgerei Bad Belzig", prize: "Wertgutschein" },
-            663: { nr: 24, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
-            678: { nr: 65, sponsor: "Reha-Klinik 'Hoher Fläming'", prize: "Wertgutschein" },
-            700: { nr: 12, sponsor: "Nord Ostsee Automobile", prize: "Servicegutschein" },
-            717: { nr: 30, sponsor: "Apollo Optik", prize: "Wertgutschein" },
-            733: { nr: 55, sponsor: "Blumengeschäft", prize: "Wertgutschein" },
-            735: { nr: 58, sponsor: "Frisör Wricke", prize: "Wertgutschein" },
-            737: { nr: 5, sponsor: "Lafim-Diakonie", prize: "Holzbank" },
-            745: { nr: 103, sponsor: "Bäckerei Gehricke", prize: "Gutschein" },
-            765: { nr: 39, sponsor: "Modehaus Ehle", prize: "1 Portmonnaie" },
-            840: { nr: 7, sponsor: "Nord Ostsee Automobile", prize: "Wochenende mit einem EQ-Modell" },
-            850: { nr: 93, sponsor: "Paulinenhof", prize: "Gutschein Day-Spa" },
-            851: { nr: 62, sponsor: "Eisenwaren Näsi", prize: "Wertgutschein" },
-            885: { nr: 25, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
-            890: { nr: 90, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
-            900: { nr: 98, sponsor: "Herbert Grüneberg, Lütte", prize: "1 Kalender 2026" },
-            908: { nr: 76, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
-            972: { nr: 53, },
-            978: { nr: 56, sponsor: "Blumengeschäft", prize: "Wertgutschein" },
-            1020: { nr: 52, sponsor: "Húng Watsana", prize: "1x halbe Stunde Thaimassage" },
-            1028: { nr: 95, sponsor: "Agrargenossenschaft Brück", prize: "1x 20 kg Kartoffeln" },
-            1042: { nr: 27, sponsor: "Alter Brauhof", prize: "Wertgutschein" },
-            1058: { nr: 42, sponsor: "Buchhandlung R. Sandberger Str.", prize: "Wertgutschein" },
-            1105: { nr: 54, sponsor: "Segelflugplatz", prize: "1 Gastflug im Segelflugzeug" },
-            1132: { nr: 59, sponsor: "Haar Planet 21", prize: "Wertgutschein" },
-            1135: { nr: 67, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
-            1141: { nr: 8, sponsor: "Natur Konkret", prize: "1 Nacht in Öko-Turm" },
-            1143: { nr: 102, sponsor: "Bäckerei Gehricke", prize: "Gutschein" },
-            1162: { nr: 4, sponsor: "Elektro Knape", prize: "Akkustaubsauger" },
-            1164: { nr: 38, sponsor: "Modehaus Ehle", prize: "1 Tasche" },
-            1203: { nr: 84, sponsor: "Euronics", prize: "Tee-Maschine" },
-            1235: { nr: 36, sponsor: "Die Brille am Marktplatz", prize: "Wertgutschein" },
-            1359: { nr: 22, sponsor: "Gasthaus 'Blick'", prize: "Wertgutschein" },
-            1385: { nr: 35, sponsor: "Fitness- und Gesundheits-Club", prize: "Wertgutschein" },
-            1402: { nr: 15, sponsor: "Friseur Dumscha", prize: "1x Waschen, Schneiden, Föhnen" },
-            1428: { nr: 50, sponsor: "Steintherme Bad", prize: "Tageskarte für Sauna & Bad" },
-            1444: { nr: 48, sponsor: "Autohaus Böttcher", prize: "1x Polarbox" },
-            1492: { nr: 85, sponsor: "Euronics", prize: "Mobiler Dampfreiniger + Radio + Powerbank" },
-            1498: { nr: 16, sponsor: "Belziger Baustoff", prize: "1 Blumendünger" },
-            1507: { nr: 23, sponsor: "MCB Autoservice", prize: "Wertgutschein" },
-            1544: { nr: 45, sponsor: "Reiter- und Erlebnis Ketz", prize: "1 Reitstunde" },
-            1599: { nr: 94, sponsor: "Agrargenossenschaft Brück", prize: "1x 20 kg Kartoffeln" },
-            1604: { nr: 51, sponsor: "Húng Watsana", prize: "1x halbe Stunde Thaimassage" },
-            1644: { nr: 77, sponsor: "Eiscafe Franke", prize: "Wertgutschein" },
-            1649: { nr: 87, sponsor: "Ehle Uhren und Schmuck", prize: "Überraschungstüte" },
-            1687: { nr: 70, sponsor: "TeeArt Café", prize: "Tee-Auswahl" },
-            1718: { nr: 28, sponsor: "Steakhaus 'El-Rancho'", prize: "Wertgutschein" },
-            1735: { nr: 20, sponsor: "REMA Fahrzeug", prize: "1 eingestielter Miststreuer" },
-            1758: { nr: 99, sponsor: "NABU", prize: "1 Kalender 2026" },
-            1760: { nr: 60, sponsor: "Haar Planet 21", prize: "Wertgutschein" },
-            1789: { nr: 10, sponsor: "Iris Optik", prize: "Wertgutschein" },
-            1794: { nr: 14, sponsor: "Bau- und Zweirad", prize: "1 Kleinkompressor" },
-            1811: { nr: 13, sponsor: "Berücks Baggerservice", prize: "1 Hochbeetaster" },
-            1862: { nr: 72, sponsor: "Kultur bei Racha", prize: "Wertgutschein" },
-            1868: { nr: 32, sponsor: "Frisör", prize: "Wertgutschein" },
-            1873: { nr: 21, sponsor: "Landkaufhaus St. Lüsse", prize: "Wertgutschein" },
-            1890: { nr: 47, sponsor: "Autohaus Böttcher", prize: "1x Polarbox" },
-            1912: { nr: 11, sponsor: "Apollo Optik", prize: "Wertgutschein" },
-            1925: { nr: 18, sponsor: "Euronics", prize: "FM Radio" },
-            1935: { nr: 82, sponsor: "Frisör Markowski", prize: "1 Fußpflege" },
-            1983: { nr: 40, sponsor: "Euronics", prize: "Akku-Fenstersauger" },
+            345: { nr: 1, sponsor: "Fahrradhaus Ahlert, Berliner Str. 21, Bad Belzig", prize: "1 Sportrad + Fahrradhelm" },
+            79: { nr: 2, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 Fernseher" },
+            473: { nr: 3, sponsor: "Idee + Spiel Antje Große, Sandbergerstr. 14-16, Bad Belzig", prize: "1 Spielhaus" },
+            1162: { nr: 4, sponsor: "Elektro Knape GmbH, Im Gewerbepark Seedoche 26, Bad Belzig", prize: "1 Akkustaubsauger von Samsung" },
+            737: { nr: 5, sponsor: "Lafim-Diakonie, Im Gewerbepark Seedoche 9, Bad Belzig", prize: "1 Holzbank" },
+            241: { nr: 6, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 Soundsystem" },
+            840: { nr: 7, sponsor: "Nord Ostsee Automobile Im Gewerbepark Seedoche 1, Bad Belzig", prize: "1 Wochenende mit dem KONA Elektro oder IONIQ 5" },
+            1141: { nr: 8, sponsor: "Natur Konkret Lütte, Chausseestr. 48, Bad Belzig/OT Lütte", prize: "1 Nacht in Fewo-Teichland für 4 Personen" },
+            11: { nr: 9, sponsor: "Trockenbau Tietz, Friedrich-Engels-Str. 15, Bad Belzig", prize: "1 Akkuschrauber von Makita" },
+            1789: { nr: 10, sponsor: "Iris Optik, Straße der Einheit 20-42, Bad Belzig", prize: "Wertgutschein" },
+            1912: { nr: 11, sponsor: "Apollo Optik, Straße der Einheit 32, Bad Belzig", prize: "Wertgutschein" },
+            700: { nr: 12, sponsor: "Nord Ostsee Automobile Im Gewerbepark Seedoche 1, Bad Belzig", prize: "1 Servicegutschein im Wert von 100 €" },
+            1811: { nr: 13, sponsor: "Bünicke Motorgeräte, Chausseestr. 13, Bad Belzig/OT Lütte", prize: "1 Hochentaster" },
+            1794: { nr: 14, sponsor: "Auto- und Zweiradbedarf, Wiesenburger Str. 22, Bad Belzig", prize: "1 Kleinkompressor für Auto + Fahrrad" },
+            1402: { nr: 15, sponsor: "Friseur Dumschat, Sandberger Str. 15, Bad Belzig", prize: "1x Waschen, Schneiden, Föhnen" },
+            1498: { nr: 16, sponsor: "Belziger Baustoffhandel/Raifeisenmarkt, Karl-Marx-Str. 18, Bad Belzig", prize: "1 Kleindüngerstreuer" },
+            23: { nr: 17, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 FM Radio" },
+            1925: { nr: 18, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 FM Radio" },
+            475: { nr: 19, sponsor: "Nord Ostsee Automobile Im Gewerbepark Seedoche 1, Bad Belzig", prize: "1 Servicegutschein im Wert von 50 €" },
+            1735: { nr: 20, sponsor: "REMA Fahrzeug- und Landtechnik GmbH, Am Denkmal 1, Bad Belzig/OT Schwanebeck", prize: "1 ferngesteuerter Mähdrescher" },
+            1873: { nr: 21, sponsor: "Landhaus Sternberg, Lüsse, Lüsse 31", prize: "Wertgutschein" },
+            1359: { nr: 22, sponsor: "Landhaus Sternberg, Lüsse, Lüsse 31", prize: "Wertgutschein" },
+            1507: { nr: 23, sponsor: "MCB Autoservice, Gartenstraße 4, Bad Belzig", prize: "Wertgutschein" },
+            663: { nr: 24, sponsor: "MCB Autoservice, Gartenstraße 4, Bad Belzig", prize: "Wertgutschein" },
+            1: { nr: 25, sponsor: "Schreibwarenhöhne, Straße der Einheit 22, Bad Belzig", prize: "Schreibmappe (I-Pad, Organizer)" },
+            1042: { nr: 26, sponsor: "Alter Brauhof, Straße der Einheit 16, Bad Belzig", prize: "Wertgutschein" },
+            1718: { nr: 27, sponsor: "Steakhaus Cascada, Straße der Einheit 30, Bad Belzig", prize: "Wertgutschein" },
+            661: { nr: 28, sponsor: "Burgmetzgerei Bad Belzig, Bahnhofstr. 9, Bad Belzig", prize: "Wertgutschein" },
+            717: { nr: 29, sponsor: "Apollo Optik, Straße der Einheit 32, Bad Belzig", prize: "Wertgutschein" },
+            213: { nr: 30, sponsor: "Apollo Optik, Straße der Einheit 32, Bad Belzig", prize: "Wertgutschein" },
+            1868: { nr: 31, sponsor: "Frisör Schönheitsfleck, Straße der Einheit 36, Bad Belzig", prize: "Wertgutschein" },
+            80: { nr: 32, sponsor: "Getränkehandel Kraft, Brücker Landstr. 7, Bad Belzig", prize: "Wertgutschein" },
+            618: { nr: 33, sponsor: "Getränkehandel Kraft, Brücker Landstr. 7, Bad Belzig", prize: "Wertgutschein" },
+            1385: { nr: 34, sponsor: "Fitness- und Gesundheitsclub Relaxare, Martin-Luther-Str. 12, Bad Belzig", prize: "Wertgutschein" },
+            1235: { nr: 35, sponsor: "Die Brille am Markt, Marktplatz 4, Bad Belzig", prize: "Wertgutschein" },
+            627: { nr: 36, sponsor: "Die Brille am Markt, Marktplatz 4, Bad Belzig", prize: "Wertgutschein" },
+            1164: { nr: 37, sponsor: "Modehaus Ehle, Straße der Einheit 13, Bad Belzig", prize: "1 Tasche" },
+            765: { nr: 38, sponsor: "Modehaus Ehle, Straße der Einheit 13, Bad Belzig", prize: "1 Portemonaie" },
+            1983: { nr: 39, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "Akku-Fenstersauger-Set" },
+            354: { nr: 40, sponsor: "Märkische Apotheke, Ernst-Thälmann-Str. 59 a, 14822 Brück", prize: "Wertgutschein" },
+            1058: { nr: 41, sponsor: "Buchhandlung Ritter, Sandberger Str. 4, Bad Belzig", prize: "Wertgutschein" },
+            547: { nr: 42, sponsor: "Reitstall Peters, Im Winkel 22, 14822 Brück/OT Baitz", prize: "1 Reitstunde" },
+            625: { nr: 43, sponsor: "Reitstall Peters, Im Winkel 22, 14822 Brück/OT Baitz", prize: "1 Reitstunde" },
+            1544: { nr: 44, sponsor: "Reiter- und Erlebnisbauernhof Groß Briesen, Kietz 11, Bad Belzig/OT Groß Briesen", prize: "1 Reitstunde" },
+            540: { nr: 45, sponsor: "Frisörsalon Jan Schönwetter, Straße der Einheit 9, Bad Belzig", prize: "1x Waschen, Schneiden, Föhnen" },
+            1890: { nr: 46, sponsor: "Autohaus Böttche, Brandenburger Str. 58, Bad Belzig", prize: "1 x Polarbox und 1 Trinkflasche" },
+            1444: { nr: 47, sponsor: "Autohaus Böttche, Brandenburger Str. 58, Bad Belzig", prize: "1 x Polarbox und 1 Trinkflasche" },
+            268: { nr: 48, sponsor: "Steintherme Bad Belzig", prize: "Wertgutschein" },
+            1428: { nr: 49, sponsor: "Steintherme Bad Belzig", prize: "Tageskarte für Sauna und Badewelt" },
+            1604: { nr: 50, sponsor: "Hünig Watsana Thai Massage, Niemegker Str. 18, Bad Belzig", prize: "1x halbe Stunde Massage" },
+            1020: { nr: 51, sponsor: "Hünig Watsana Thai Massage, Niemegker Str. 18, Bad Belzig", prize: "1x halbe Stunde Massage" },
+            972: { nr: 52, sponsor: "Gewinner", prize: "Gutschein" },
+            733: { nr: 53, sponsor: "Blumengeschäft Anke Horn, Straße der Einheit 31, Bad Belzig", prize: "Wertgutschein" },
+            978: { nr: 54, sponsor: "Blumengeschäft Anke Horn, Straße der Einheit 31, Bad Belzig", prize: "Wertgutschein" },
+            519: { nr: 55, sponsor: "Gaststätte Paradies, Am Sportplatz 10, BadBelzig/OT Dippmannsdorf", prize: "Wertgutschein" },
+            735: { nr: 56, sponsor: "Frisör Wricke, Briesenerstr. 19, Ragösen", prize: "Wertgutschein" },
+            1132: { nr: 57, sponsor: "Haar Planet 21, Brandenburger Str. 12, Bad Belzig", prize: "Wertgutschein" },
+            1760: { nr: 58, sponsor: "Haar Planet 21, Brandenburger Str. 12, Bad Belzig", prize: "Wertgutschein" },
+            520: { nr: 59, sponsor: "Fitness- und Gesundheitsclub Relaxare, Martin-Luther-Str. 12, Bad Belzig", prize: "Wertgutschein" },
+            851: { nr: 60, sponsor: "Eisenwaren Nitschke, Straße der Einheit 18, Bad Belzig", prize: "Wertgutschein" },
+            267: { nr: 61, sponsor: "Märkische Apotheke, Ernst-Thälmann-Str. 59 a, 14822 Brück", prize: "Wertgutschein" },
+            458: { nr: 62, sponsor: "Reha-Klinik „Hoher Fläming“, Hermann-Lielje-Straße 3, Bad Belzig", prize: "Wertgutschein" },
+            678: { nr: 63, sponsor: "Reha-Klinik „Hoher Fläming“, Hermann-Lielje-Straße 3, Bad Belzig", prize: "Wertgutschein" },
+            271: { nr: 64, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
+            1135: { nr: 65, sponsor: "Seecafé Bad Belzig", prize: "Wertgutschein" },
+            619: { nr: 66, sponsor: "Textiladen P-han, Wiesenburger Str. 8, Bad Belzig", prize: "Wertgutschein" },
+            608: { nr: 67, sponsor: "Old Sandill Whisky Destillerie, Wittenberger Str. 1, Bad Belzig", prize: "1 Flasche Whisky" },
+            1687: { nr: 68, sponsor: "TeeArt Café, Teeshop, Straße der Einheit 20, Bad Belzig", prize: "Tee-Auswahl" },
+            121: { nr: 69, sponsor: "Kultur bei Racha & Roger, Straße d. Einheit 24, Bad Belzig", prize: "Wertgutschein" },
+            1862: { nr: 70, sponsor: "Kultur bei Racha & Roger, Straße d. Einheit 24, Bad Belzig", prize: "Wertgutschein" },
+            463: { nr: 71, sponsor: "Kultur bei Racha & Roger, Straße d. Einheit 24, Bad Belzig", prize: "Wertgutschein" },
+            565: { nr: 72, sponsor: "Reiter- und Erlebnisbauernhof Groß Briesen, Kietz 11, Bad Belzig/OT Groß Briesen", prize: "1 Salami" },
+            360: { nr: 73, sponsor: "Eiscafé Franke, Straße der Einheit 2, Bad Belzig", prize: "Wertgutschein" },
+            908: { nr: 74, sponsor: "Eiscafé Franke, Straße der Einheit 2, Bad Belzig", prize: "Wertgutschein" },
+            1644: { nr: 75, sponsor: "Eiscafé Franke, Straße der Einheit 2, Bad Belzig", prize: "Wertgutschein" },
+            320: { nr: 76, sponsor: "Flaming-Alpakas, am Lütter Bach, Lütte", prize: "Alpaka-Wanderung für 1 Person" },
+            52: { nr: 77, sponsor: "Buchhandlung Ritter, Sandberger Str. 4, Bad Belzig", prize: "Wanderbuch" },
+            400: { nr: 78, sponsor: "Zeitungseck, Straße der Einheit 34, Bad Belzig", prize: "Käse-Dose" },
+            1935: { nr: 79, sponsor: "Frisör Markowski, Niemegker Str. 20, Bad Belzig", prize: "1 Fußpflege" },
+            509: { nr: 80, sponsor: "Frisör Markowski, Niemegker Str. 20, Bad Belzig", prize: "1 Fußpflege" },
+            1203: { nr: 81, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 Tee-Maschine" },
+            1492: { nr: 82, sponsor: "Euronics Bild und Ton, Sandberger Str. 2, Bad Belzig", prize: "1 Mobiler Dampfgarer" },
+            133: { nr: 83, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "11 verschiedene Kleinteile" },
+            1649: { nr: 84, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "1 Tüte" },
+            340: { nr: 85, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "1 Tüte" },
+            304: { nr: 86, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "1 Tüte" },
+            890: { nr: 87, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "1 Tüte" },
+            38: { nr: 88, sponsor: "Ehle Uhren und Schmuck, Luisenstraße 1, 14822 Brück", prize: "1 Tüte" },
+            154: { nr: 89, sponsor: "Paulinenhof, Kuhlowitzer Dorfstraße 1, Bad Belzig/OT Kuhlowitz", prize: "Gutschein 1 Burger + Kino" },
+            850: { nr: 90, sponsor: "Paulinenhof, Kuhlowitzer Dorfstraße 1, Bad Belzig/OT Kuhlowitz", prize: "Gutschein Day-Spa" },
+            1599: { nr: 91, sponsor: "Agrargenossenschaft", prize: "1x 20 kg Kartoffeln" },
+            1028: { nr: 92, sponsor: "Agrargenossenschaft", prize: "1x 20 kg Kartoffeln" },
+            49: { nr: 93, sponsor: "Agrargenossenschaft", prize: "1x 10 kg Kartoffeln" },
+            900: { nr: 94, sponsor: "Herbert Grüneberg, Lütte", prize: "1x Kartoffeln" },
+            1758: { nr: 95, sponsor: "NABU", prize: "1 Kalender 2026" },
+            30: { nr: 96, sponsor: "NABU", prize: "1 Kalender 2026" },
+            433: { nr: 97, sponsor: "NABU", prize: "1 Kalender 2026" },
+            1143: { nr: 98, sponsor: "NABU", prize: "1 Kalender 2026" },
+            745: { nr: 99, sponsor: "NABU", prize: "1 Kalender 2026" }
         };
 
         // --- LOCALIZATION ---
@@ -449,16 +426,14 @@
             const showResult = state.result !== 'idle';
 
             return `
-                <div class="los-checker-wrapper">
-                    <button class="lang-toggle" data-action="toggle-lang">${t.langToggle}</button>
-                    <div class="app-container">
-                        <div class="logo-header">
-                            <span class="logo-main">ALTSTADT</span>
-                            <span class="logo-sub">SOMMER</span>
-                        </div>
-                        <h1 class="title">${t.title}</h1>
-                        ${showResult ? ResultView() : FormView()}
+                <button class="lang-toggle" data-action="toggle-lang">${t.langToggle}</button>
+                <div class="app-container">
+                    <div class="logo-header">
+                        <span class="logo-main">ALTSTADT</span>
+                        <span class="logo-sub">SOMMER</span>
                     </div>
+                    <h1 class="title">${t.title}</h1>
+                    ${showResult ? ResultView() : FormView()}
                 </div>
             `;
         }
@@ -516,19 +491,23 @@
         }
 
         // --- RENDER & EVENT HANDLING ---
-        const root = document.getElementById('altstadtsommer-los-checker');
+        const root = document.getElementById('root');
 
         function render() {
             if (root) {
-                root.setAttribute('lang', state.language);
+                document.documentElement.lang = state.language; // Dynamically set page language for screen readers
                 root.innerHTML = App();
-                
+                // After rendering, manage focus for better keyboard navigation
                 if (state.result === 'idle') {
                     const input = root.querySelector('#number-input');
-                    if (input) input.focus();
+                    if (input) {
+                        input.focus();
+                    }
                 } else {
                     const button = root.querySelector('[data-action="check-another"]');
-                    if(button) button.focus();
+                    if(button) {
+                        button.focus();
+                    }
                 }
             }
         }
@@ -539,6 +518,7 @@
                 const prize = prizes[num];
                 if (prize) {
                     setState({ result: 'win', winningPrize: prize });
+                    // Trigger celebration effects
                     if (typeof confetti === 'function') {
                         confetti({
                             particleCount: 150,
@@ -554,11 +534,7 @@
 
         function handleAction(e) {
             const target = e.target;
-            if (!target || !target.closest('#altstadtsommer-los-checker')) return;
-            const actionTarget = target.closest('[data-action]');
-            if (!actionTarget) return;
-
-            const action = actionTarget.dataset.action;
+            const action = target.dataset.action;
 
             switch (action) {
                 case 'toggle-lang':
@@ -571,8 +547,8 @@
                     setState({ result: 'idle', inputValue: '', winningPrize: null });
                     break;
                 case 'input-change':
-                    if (actionTarget instanceof HTMLInputElement) {
-                        state.inputValue = actionTarget.value;
+                    if (e.target instanceof HTMLInputElement) {
+                        state.inputValue = e.target.value;
                         const button = root.querySelector('[data-action="check-number"]');
                         if (button) {
                             button.disabled = !state.inputValue;
@@ -583,7 +559,7 @@
         }
 
         function handleKeydown(e) {
-            if (e.key === 'Enter' && root.contains(document.activeElement)) {
+            if (e.key === 'Enter') {
                 e.preventDefault();
                 if (state.result !== 'idle') {
                     setState({ result: 'idle', inputValue: '', winningPrize: null });
@@ -604,7 +580,5 @@
             }
         });
     </script>
-
 </body>
 </html>
-
